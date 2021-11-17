@@ -1,0 +1,8 @@
+Thor,300,15
+Loki,200,10
+Hulk,350,9
+Ironman,400,8
+Capitan America,300,12
+Thanos,100,20
+Black Panter,350,11
+Spiderman,250,7

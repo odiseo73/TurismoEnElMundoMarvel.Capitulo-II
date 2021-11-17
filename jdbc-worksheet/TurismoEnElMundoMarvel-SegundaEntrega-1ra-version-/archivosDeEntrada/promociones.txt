@@ -1,0 +1,4 @@
+"Pack Civil War",porcentual,30,Wakanda,Sokovia,Latveria,
+"Pack Dioses",porcentual,20,Wakanda,Asgard,Jotunheim,
+"Pack Infinity War",absoluta,100,Reino Cuantico,Jotunheim,Wakanda,
+"Pack Dark World",axb,0,Attilan,Asgard,Jotunheim
