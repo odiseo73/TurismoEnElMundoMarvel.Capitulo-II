@@ -1,18 +1,17 @@
 package usuario;
 
-import java.util.List;
+//import java.util.List;
 
-import productos.Atraccion;
-import productos.Ofertable;
 
 public class Usuario {
-
+private int id;
 	private String nombre;
 	private double tiempoDisponible;
 	private double dinero;
-	private List<Atraccion> atraccionesCompradas;
+	//private List<Atraccion> atraccionesCompradas;
 	
-	public Usuario(String nombre, double dinero, double tiempoEnHoras) {
+	public Usuario(int id, String nombre, double dinero, double tiempoEnHoras) {
+		this.id = id;
 		this.nombre = nombre;
 		this.tiempoDisponible = tiempoEnHoras;
 		this.dinero = dinero;
@@ -26,8 +25,10 @@ public class Usuario {
 	public double getDinero() {
 		return dinero;
 	}
-	
-
+	public int getId() {
+		return id;
+	}
+/*
 	public void comprarOfertable(Ofertable o) {
 			this.dinero -= o.getPrecio();
 			this.tiempoDisponible -= o.getTiempoEnHoras();
@@ -41,7 +42,7 @@ public class Usuario {
 				atraccionesCompradas.add((Atraccion) o);
 			}
 	}
-	
+	*/
 
 	@Override
 	public String toString() {

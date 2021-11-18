@@ -16,16 +16,16 @@ import productos.Promocion;
 import productos.PromocionAbsoluta;
 import productos.PromocionAxB;
 import productos.PromocionPorcentual;
-import usuario.Usuario;
+
 
 public class Lector {
 
-	private List<Usuario> usuarios;
+	private List<Atraccion> usuarios;
 	private Map<String, Atraccion> atracciones;
 	private List<Promocion> promociones;
 // acordarse eliminar atr
 	private List<Atraccion> atr;
-
+/*
 	public Lector(String archivo, String archivo2, String archivo3) throws FileNotFoundException {
 		setUsuarios(archivo);
 		setAtracciones(archivo2);
@@ -119,5 +119,5 @@ public class Lector {
 		}
 		sc.close();
 	}
-
+*/
 }

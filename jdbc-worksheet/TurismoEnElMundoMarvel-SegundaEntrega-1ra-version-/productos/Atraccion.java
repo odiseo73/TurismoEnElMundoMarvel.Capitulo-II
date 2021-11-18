@@ -4,18 +4,20 @@ import java.util.List;
 import java.util.Objects;
 
 public class Atraccion implements Ofertable {
-
+	
+private int id;
 	private String nombre;
 	private int precio;
-	private double duracionEnHoras;
+	private double tiempoEnHoras;
 	private final int CUPO_INICIAL;
 	private int cupoDisponible;
 
-	public Atraccion(String nombre, int precio, double duracionEnHoras, int cupo) {
+	public Atraccion(int id, String nombre, int precio, double tiempoEnHoras, int cupo) {
 		super();
+		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
-		this.duracionEnHoras = duracionEnHoras;
+		this.tiempoEnHoras = tiempoEnHoras;
 		this.CUPO_INICIAL = cupo;
 		this.cupoDisponible = cupo;
 	}
@@ -25,7 +27,7 @@ public class Atraccion implements Ofertable {
 	}
 
 	public double getTiempoEnHoras() {
-		return duracionEnHoras;
+		return tiempoEnHoras;
 	}
 
 	public int getCupoInicial() {
@@ -51,7 +53,7 @@ public class Atraccion implements Ofertable {
 	@Override
 	public String toString() {
 		return "Atraccion: "+ "\n" + "Nombre: " + nombre + "\n" + "Puntos Marvel: "  + precio + "\n" + "Duracion:"
-				+ duracionEnHoras + " horas" + "\n";
+				+ tiempoEnHoras + " horas" + "\n";
 	}
 
 	public int getPrecio() {
@@ -61,7 +63,7 @@ public class Atraccion implements Ofertable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(CUPO_INICIAL, cupoDisponible, duracionEnHoras, nombre, precio);
+		return Objects.hash(CUPO_INICIAL, cupoDisponible, tiempoEnHoras, nombre, precio);
 	}
 
 	@Override
@@ -74,13 +76,17 @@ public class Atraccion implements Ofertable {
 			return false;
 		Atraccion other = (Atraccion) obj;
 		return CUPO_INICIAL == other.CUPO_INICIAL && cupoDisponible == other.cupoDisponible
-				&& Double.doubleToLongBits(duracionEnHoras) == Double.doubleToLongBits(other.duracionEnHoras)
+				&& Double.doubleToLongBits(tiempoEnHoras) == Double.doubleToLongBits(other.tiempoEnHoras)
 				&& Objects.equals(nombre, other.nombre) && precio == other.precio;
 	}
 
 	public List<Atraccion> getAtracciones() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 }

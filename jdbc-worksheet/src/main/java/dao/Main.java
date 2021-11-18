@@ -1,24 +1,25 @@
-package modelo;
+package dao;
 import java.sql.SQLException;
 import java.util.List;
 
-public class App {
+import jdbc.ConnectionProvider;
+import usuario.Usuario;
+
+public class Main {
 
 	public static void main(String[] args) throws SQLException {
-		UserDAO dao = new UserDAO();
+		UsuarioDAOimpl dao = new UsuarioDAOimpl();
 
-		List<User> xx = dao.findAll();
+		List<Usuario> xx = dao.findAll();
 		System.out.println(xx);
 
-		User leo = dao.findByUsername("leo").get(0);
-		
-		leo.setPassword("contraseña");
+		Usuario leo = dao.findByUsername("leo").get(0);
 		
 		dao.update(leo);
 		
 		
 		xx = dao.findAll();
-		for (User user : xx) {
+		for (Usuario user : xx) {
 			System.out.println(user);
 		}
 		

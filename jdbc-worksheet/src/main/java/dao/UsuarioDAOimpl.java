@@ -12,53 +12,29 @@ import usuario.Usuario;
 
 public class UsuarioDAOimpl implements UsuarioDAO {
 
-public int insert(Usuario user) throws SQLException {
-		
-		Connection connection = ConnectionProvider.getConnection();
-		String sql = "INSERT INTO USERS (USERNAME, PASSWORD) VALUES (?, ?)";
-		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setString(1, user.getNombre());
-		statement.setDouble(2, user.getDinero());
-
-		int rows = statement.executeUpdate();
-
-		return rows;
-		
-	}
 	
 	public int update(Usuario user) throws SQLException {
 		
 		Connection connection = ConnectionProvider.getConnection();
-		String sql = "UPDATE USERS SET PASSWORD = ? WHERE USERNAME = ?";
+		String sql = "UPDATE USUARIOS SET DINERO = ?,TIEMPODISPONIBLE = ? WHERE ID = ?";
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setString(1, user.getNombre());
-		statement.setDouble(2, user.getDinero());
-
+		statement.setInt(1, user.getId());
+		//statement.setString(2, user.getNombre());
+		statement.setDouble(3, user.getDinero());
+		statement.setDouble(4, user.getTiempoEnHoras());
+		
 		int rows = statement.executeUpdate();
 
 		return rows;
 		
 	}
 	
-	
-	public int delete(Usuario user) throws SQLException {
-		
-		Connection connection = ConnectionProvider.getConnection();
-		String sql = "DELETE FROM USERS WHERE USERNAME = ?";
-		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setString(1, user.getNombre());
-
-		int rows = statement.executeUpdate();
-
-		return rows;
-		
-	}
 	
 	
 	public List<Usuario> findAll() throws SQLException {
 
 		Connection connection = ConnectionProvider.getConnection();
-		String sql = "SELECT * FROM USERS";
+		String sql = "SELECT * FROM USUARIOS";
 		PreparedStatement statement = connection.prepareStatement(sql);
 
 		ResultSet result = statement.executeQuery();
@@ -76,7 +52,7 @@ public int insert(Usuario user) throws SQLException {
 	public List<Usuario> findByUsername(String pepito) throws SQLException {
 
 		Connection connection = ConnectionProvider.getConnection();
-		String sql = "SELECT * FROM USERS WHERE USERNAME = ?";
+		String sql = "SELECT * FROM USUARIOS WHERE USERNAME = ?";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, pepito);
 
@@ -95,7 +71,7 @@ public int insert(Usuario user) throws SQLException {
 	public List<Usuario> findByUsernameLike(String username) throws SQLException {
 
 		Connection connection = ConnectionProvider.getConnection();
-		String sql = "SELECT * FROM USERS WHERE USERNAME LIKE ?";
+		String sql = "SELECT * FROM USUARIOS WHERE USERNAME LIKE ?";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, "%" + username + "%");
 
@@ -112,12 +88,13 @@ public int insert(Usuario user) throws SQLException {
 	}
 
 	private Usuario toUser(ResultSet result) throws SQLException {
+		Integer id = result.getInt("id");
 		String nombre = result.getString("nombre");
 		Double dinero = result.getDouble("dinero");
 		Double tiempo = result.getDouble("tiempo");
 		
 
-		return new Usuario(nombre, dinero, tiempo);
+		return new Usuario(id,nombre, dinero, tiempo);
 	}
 
 
