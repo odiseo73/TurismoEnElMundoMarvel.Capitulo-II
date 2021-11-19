@@ -1,5 +1,10 @@
 package usuario;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import productos.Atraccion;
+
 //import java.util.List;
 
 
@@ -8,6 +13,7 @@ private int id;
 	private String nombre;
 	private double tiempoDisponible;
 	private double dinero;
+	private List<Atraccion> atraccionesCompradas = new LinkedList<Atraccion>();
 	//private List<Atraccion> atraccionesCompradas;
 	
 	public Usuario(int id, String nombre, double dinero, double tiempoEnHoras) {
@@ -27,6 +33,9 @@ private int id;
 	}
 	public int getId() {
 		return id;
+	}
+	public List<Atraccion> getAtraccionesCompradas(){
+		return atraccionesCompradas;
 	}
 /*
 	public void comprarOfertable(Ofertable o) {

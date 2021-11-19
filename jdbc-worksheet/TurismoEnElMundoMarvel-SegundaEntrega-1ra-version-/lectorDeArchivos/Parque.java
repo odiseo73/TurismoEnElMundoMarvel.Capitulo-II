@@ -12,16 +12,18 @@ import java.util.Scanner;
 
 
 import productos.Atraccion;
-import productos.Ofertable;
+import productos.Producto;
 import productos.Promocion;
 import usuario.Usuario;
 import dao.AtraccionDAO;
+import dao.PromocionDAO;
 import dao.UsuarioDAO;
 
 
 public class Parque {
-	private UsuarioDAO dao1;
-	private AtraccionDAO dao2;
+	private UsuarioDAO usuarioDAO;
+	private AtraccionDAO atraccionDAO;
+	private PromocionDAO promocionDAO;
 	
 	private List<Usuario> usuarios;
 	private List<Atraccion> atracciones;
@@ -31,11 +33,12 @@ public class Parque {
 	
 	private ArrayList<Atraccion> atraccionesUsadas;
 	
-	public Parque(UsuarioDAO dao1, AtraccionDAO dao2) throws FileNotFoundException, SQLException {
-		this.dao1 = dao1;
-		this.dao2 = dao2;
+	public Parque(UsuarioDAO dao1, AtraccionDAO dao2, PromocionDAO dao3) throws FileNotFoundException, SQLException {
+		this.usuarioDAO = dao1;
+		this.atraccionDAO = dao2;
+		this.promocionDAO = dao3;
 		leerArchivos();
-		//ofrecerProductos();
+		ofrecerProductos();
 
 	}
 	public List<Usuario> getUsuarios() {
@@ -43,18 +46,18 @@ public class Parque {
 	}
 	public void leerArchivos() throws FileNotFoundException, SQLException {
 		
-		usuarios = dao1.findAll();
-		atracciones = dao2.findAll() ;
-		//promociones = dao.findAll();
+		usuarios = usuarioDAO.findAll();
+		atracciones = atraccionDAO.findAll() ;
+		promociones = promocionDAO.findAll();
 		//atr ;
 	}
-	private void generarItinerario(Usuario usuario, List<Ofertable> productosComprados) throws FileNotFoundException {
+	private void generarItinerario(Usuario usuario, List<Producto> productosComprados) throws FileNotFoundException {
 		int puntos = 0;
 		int tiempo = 0;
 		System.out.println("Resumen del itinerario de: " + usuario.getNombre() + "\n");
 		System.out.println("Productos Comprados:" + productosComprados.size() + "\n");
 
-		for (Ofertable producto : productosComprados) {
+		for (Producto producto : productosComprados) {
 
 			producto.getTiempoEnHoras();
 			tiempo += producto.getTiempoEnHoras();
@@ -62,7 +65,7 @@ public class Parque {
 
 		System.out.println("Horas necesarias para realizarlos:" + tiempo + "\n");
 
-		for (Ofertable producto : productosComprados) {
+		for (Producto producto : productosComprados) {
 
 			producto.getPrecio();
 			puntos += producto.getPrecio();
@@ -87,33 +90,24 @@ public class Parque {
 		return Double.compare(o.getDinero(), a.getPrecio());
 	}
 
-	private int compararTiempo(Usuario o, Ofertable p) {
+	private int compararTiempo(Usuario o, Producto p) {
 		return Double.compare(o.getTiempoEnHoras(), p.getTiempoEnHoras());
 	}
 
-	private boolean verificarCupo(List<Atraccion> atracciones) {
-		boolean hayCupo = true;
-		for (Atraccion atraccion : atracciones) {
-			if (!atraccion.hayCupo()) {
-				hayCupo = false;
-			}
-		}
-		return hayCupo;
-	}
 
-	private boolean verificarRepetidosPromocion(List<Atraccion> atr1, List<Atraccion> atr2) {
+	private boolean verificarRepetidosPromocion(List<Producto> productosComprados, List<Atraccion> atr2) {
 		boolean bandera = false;
 		for (Atraccion atraccion : atr2) {
-			if (atr1.contains(atraccion)) {
+			if (productosComprados.contains(atraccion)) {
 				bandera = true;
 			}
 		}
 		return bandera;
 	}
 
-	private boolean verificarRepetidosAtraccion(List<Ofertable> productos, Atraccion atr) {
+	private boolean verificarRepetidosAtraccion(List<Producto> productos, Atraccion atr) {
 		boolean bandera = false;
-for (Ofertable producto : productos) {
+for (Producto producto : productos) {
 	if(producto.getClass().toString().equals("class mundoMarvel.Promocion")) {
 		//producto.getAtraccionesIndividuales().contains(atr.getNombre());
 		bandera = true;
@@ -125,13 +119,60 @@ for (Ofertable producto : productos) {
 }
 		return bandera;
 	}
+	private List<Atraccion> aniadirAtraccionComprada(List<Atraccion> atraccionesCompradas, Producto producto) {
+		
+		if(producto.esPromocion()) {
+			List<Atraccion> lista = producto.getAtracciones();
+		for (Atraccion atraccion : lista) {
+			if (!compararNombresIguales(atraccionesCompradas, atraccion)) {
+				atraccionesCompradas.add(atraccion);
+			}
+		}
+		}
+		if(!producto.esPromocion()) {
+			
+				if (!compararNombresIguales(atraccionesCompradas, producto)) {
+					atraccionesCompradas.add((Atraccion) producto);
+			}
+		}
+		return atracciones;
+	}
+private List<Producto> aniadirProductoComprado(List<Producto> productosComprados, Producto producto){
+	if (producto.esPromocion()) {
+		for (Atraccion atraccion : producto.getAtracciones()) {
+			productosComprados.add(atraccion);
+		}
+	}
+	if (!producto.esPromocion()) {
+		productosComprados.add(producto);
+	}
+	return productosComprados;
+}
+	private List<Atraccion> aniadirAtraccionesUsadas(List<Atraccion> atr, Atraccion a) {
 
+		if (!compararNombresIguales(atraccionesUsadas, a)) {
+			atr.add(a);
+		}
+		return atr;
+	}
+
+
+	private boolean compararNombresIguales(List<Atraccion> atracciones, Producto producto) {
+		boolean bandera = false;
+		for (Atraccion atraccion : atracciones) {
+			if (atraccion.getNombre().equals(producto.getNombre())) {
+				bandera = true;
+			}
+		}
+
+		return bandera;
+	}
 	private void ofrecerProductos() throws FileNotFoundException {
 
 		for (Usuario usuario : usuarios) {
 
-			List<Ofertable> productosComprados = new LinkedList<Ofertable>();
-			
+			List<Producto> productosComprados = new LinkedList<Producto>();
+			//List<String> productosComprados = new ArrayList<String>();
 			System.out.println("----------------------------------------------");
 			System.out.println("Bienvenido/a a Mundo Marvel");
 			System.out.println("Nombre de Visitante: " + usuario.getNombre());
@@ -145,46 +186,21 @@ for (Ofertable producto : productos) {
 		}
 	}
 
-	private List<Atraccion> aniadirPromocionComprada(List<Atraccion> atr, Promocion p) {
-		List<Atraccion> lista = p.getAtracciones();
-		for (Atraccion atraccion : lista) {
-			if (!compararNombresIguales(atraccionesUsadas, atraccion)) {
-				atr.add(atraccion);
-			}
-		}
-		return atr;
-	}
-
-	private List<Atraccion> aniadirAtraccionesUsadas(List<Atraccion> atr, Atraccion a) {
-
-		if (!compararNombresIguales(atraccionesUsadas, a)) {
-			atr.add(a);
-		}
-		return atr;
-	}
 
 
-	private boolean compararNombresIguales(List<Atraccion> atracciones, Atraccion atr) {
-		boolean bandera = false;
-		for (Atraccion atraccion : atracciones) {
-			if (atraccion.getNombre().equals(atr.getNombre())) {
-				bandera = true;
-			}
-		}
-
-		return bandera;
-	}
-
-	void ofrecerPromociones(Usuario usuario, List<Ofertable> productosComprados) {
+	void ofrecerPromociones(Usuario usuario, List<Producto> productosComprados) {
 
 		atraccionesUsadas = new ArrayList<Atraccion>();
-		List<Atraccion> atraccionesCompradas = new LinkedList<Atraccion>();
+		List<Atraccion> atraccionesCompradas = usuario.getAtraccionesCompradas();
 
 		for (Promocion promocion : promociones) {
-
+// compararPrecioPromocion, compararTiempo y verificarRepertidosPromocion tienen que ser metodos propios de Promocion
+			
+//productosComprados puede ser pensada comp una lista de String con los nombre de los productos para despues directamente
+//ser colocados en la tabla itinerario			
 			if (compararPrecioPromocion(usuario, promocion) >= 0 && (compararTiempo(usuario, promocion) >= 0)
-					&& verificarCupo(atraccionesUsadas)
-					&& !verificarRepetidosPromocion(atraccionesCompradas, promocion.getAtracciones())) {
+					&& promocion.verificarCupo(atraccionesCompradas)
+					&& !verificarRepetidosPromocion(productosComprados, promocion.getAtracciones())) {
 
 				System.out.println(promocion);
 				System.out.println("Acepta la sugerencia?" + " Ingrese SI o NO");
@@ -198,25 +214,26 @@ for (Ofertable producto : productos) {
 				}
 				if (respuesta.equals("SI")) {
 					//usuario.comprarOfertable(promocion);
-					aniadirPromocionComprada(atraccionesUsadas, promocion);
-					aniadirPromocionComprada(atraccionesCompradas, promocion);
-					restarCupo(atraccionesUsadas, atraccionesCompradas);
-					aniadirOfertable(productosComprados, promocion);
+					aniadirProductoComprado(productosComprados, promocion);
+					aniadirAtraccionComprada(atraccionesCompradas, promocion);
+					restarCupo(atraccionesCompradas);
+					
+					//aniadirOfertable(productosComprados, promocion);
 				}
 				System.out.println("----------------------------------------------");
 			}
 		}
 	}
 
-	void ofrecerAtracciones(Usuario usuario, List<Ofertable> productosComprados) {
+	void ofrecerAtracciones(Usuario usuario, List<Producto> productosComprados) {
 
 		atraccionesUsadas = new ArrayList<Atraccion>();
 
-		List<Atraccion> atraccionesCompradas = new LinkedList<Atraccion>();
+		List<Atraccion> atraccionesCompradas = usuario.getAtraccionesCompradas();
 
 		for (Atraccion atraccion : atr) {
 			if (compararPrecioAtraccion(usuario, atraccion) >= 0 && compararTiempo(usuario, atraccion) >= 0
-					&& verificarCupo(atraccionesUsadas)
+					&& atraccion.verificarCupo(atraccionesUsadas)
 					&& !verificarRepetidosAtraccion(productosComprados, atraccion)) {
 
 				System.out.println(atraccion);
@@ -231,27 +248,27 @@ for (Ofertable producto : productos) {
 				}
 				if (respuesta.equals("SI")) {
 					//usuario.comprarOfertable(atraccion);
-					aniadirAtraccionesUsadas(atraccionesUsadas, atraccion);
+					//aniadirAtraccionesUsadas(atraccionesUsadas, atraccion);
+					aniadirProductoComprado(productosComprados,atraccion);
+					aniadirAtraccionComprada(atraccionesCompradas, atraccion);
+					//aniadirAtraccionesUsadas(atraccionesCompradas, atraccion);
 
-					aniadirAtraccionesUsadas(atraccionesCompradas, atraccion);
-
-					restarCupo(atraccionesUsadas, atraccionesCompradas);
-					aniadirOfertable(productosComprados, atraccion);
+					//restarCupo(atraccionesUsadas, atraccionesCompradas);
+					restarCupo(atraccionesCompradas);
+					//aniadirOfertable(productosComprados, atraccion);
 				}
 				System.out.println("----------------------------------------------");
 			}
 		}
 	}
 
-	void aniadirOfertable(List<Ofertable> productosComprados, Ofertable o) {
+	void aniadirOfertable(List<Producto> productosComprados, Producto o) {
 		productosComprados.add(o);
 	}
 
-	private void restarCupo(List<Atraccion> atraccionesUsadas, List<Atraccion> atraccionesCompradas) {
-		for (Atraccion atraccion : atraccionesUsadas) {
-			if (compararNombresIguales(atraccionesCompradas, atraccion)) {
-				atraccion.restarCupo();
-			}
+	private void restarCupo(List<Atraccion> atraccionesCompradas) {
+		for (Atraccion atraccion : atraccionesCompradas) {
+			atraccion.restarCupo();
 		}
 
 	}

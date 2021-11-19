@@ -3,14 +3,17 @@ package productos;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Promocion implements Ofertable {
+public abstract class Promocion implements Producto {
 
 	private String nombre;
 	private List<Atraccion> atracciones;
-
-	public Promocion(String nombre, List<Atraccion> atracciones) {
+    private Integer id;
+	
+	
+	public Promocion(Integer id,String nombre, List<Atraccion> atracciones) {
 		this.nombre = nombre;
 		this.atracciones = atracciones;
+		this.id = id;
 	}
 
 	public abstract double getPrecioConDescuento();
@@ -30,7 +33,23 @@ public abstract class Promocion implements Ofertable {
 	public List<Atraccion> getAtracciones() {
 		return atracciones;
 	}
-
+	
+	public boolean verificarCupo(List<Atraccion> atraccionesCompradas) {
+		boolean hayCupo = true;
+		List<Atraccion> atraccionesDePromocion = this.getAtracciones();
+		for (Atraccion atraccion : atraccionesCompradas) {
+			if (!atraccion.hayCupo()) {
+				hayCupo = false;
+			}
+		}
+		for (Atraccion atraccion : atraccionesDePromocion) {
+			if (!atraccion.hayCupo()) {
+				hayCupo = false;
+			}
+		}
+		return hayCupo;
+	}
+	
 	public void restarCupo() {
 		for (Atraccion atracciones : atracciones) {
 			atracciones.restarCupo();

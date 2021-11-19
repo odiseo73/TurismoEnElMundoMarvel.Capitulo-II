@@ -4,8 +4,8 @@ import java.util.List;
 
 public class PromocionAbsoluta extends Promocion {
 	private int precio;
-	public PromocionAbsoluta(String nombre, int precio, List<Atraccion> atracciones) {
-		super(nombre, atracciones);
+	public PromocionAbsoluta(Integer id, String nombre, int precio, List<Atraccion> atracciones) {
+		super(id, nombre, atracciones);
 		this.precio = precio;
 	}
 
@@ -15,6 +15,8 @@ public class PromocionAbsoluta extends Promocion {
 		
 		
 	}
+
+	
 
 
 

@@ -48,25 +48,6 @@ public class UsuarioDAO implements GenericDAO<Usuario> {
 		return usuarios;
 
 	}
-	/*
-	public int countAll() throws SQLException {
-
-		Connection connection = ConnectionProvider.getConnection();
-		String sql = "SELECT * FROM USUARIOS";
-		PreparedStatement statement = connection.prepareStatement(sql);
-
-		ResultSet result = statement.executeQuery();
-
-		int s = 0;
-
-		while (result.next()) {
-			s += 1;
-		}
-
-		return s;
-
-	}
-	*/
 	
 
 	private Usuario toUser(ResultSet result) throws SQLException {

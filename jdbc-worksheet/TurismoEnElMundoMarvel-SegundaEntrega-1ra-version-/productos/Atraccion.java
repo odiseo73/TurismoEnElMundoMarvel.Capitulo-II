@@ -3,7 +3,7 @@ package productos;
 import java.util.List;
 import java.util.Objects;
 
-public class Atraccion implements Ofertable {
+public class Atraccion implements Producto {
 	
 private int id;
 	private String nombre;
@@ -46,10 +46,12 @@ private int id;
 		return this.cupoDisponible > 0;
 	}
 	
+		
 	public boolean esPromocion() {
 		return false;
 	}
 
+		
 	@Override
 	public String toString() {
 		return "Atraccion: "+ "\n" + "Nombre: " + nombre + "\n" + "Puntos Marvel: "  + precio + "\n" + "Duracion:"
@@ -88,5 +90,16 @@ private int id;
 	public int getId() {
 		return id;
 	}
+
+	public boolean verificarCupo(List<Atraccion> atraccionesCompradas) {
+		boolean hayCupo = true;
+		for (Atraccion atraccion : atraccionesCompradas) {
+			if (!atraccion.hayCupo()) {
+				hayCupo = false;
+			}
+		}
+		return hayCupo;
+	}
+
 
 }

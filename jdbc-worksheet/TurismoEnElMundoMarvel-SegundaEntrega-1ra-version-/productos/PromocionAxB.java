@@ -3,8 +3,8 @@ package productos;
 import java.util.List;
 
 public class PromocionAxB extends Promocion {
-public PromocionAxB(String nombre, List<Atraccion> atracciones) {
-		super(nombre, atracciones);
+public PromocionAxB(Integer id, String nombre, List<Atraccion> atracciones) {
+		super(id, nombre, atracciones);
 		
 	}
 
@@ -19,6 +19,8 @@ private double precio;
 		
 	}
 
+
+	
 
 
 }
