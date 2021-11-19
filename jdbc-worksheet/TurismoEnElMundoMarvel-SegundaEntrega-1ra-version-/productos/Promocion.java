@@ -13,7 +13,7 @@ public abstract class Promocion implements Ofertable {
 		this.atracciones = atracciones;
 	}
 
-	protected abstract double getPrecioConDescuento();
+	public abstract double getPrecioConDescuento();
 
 	public String getNombre() {
 		return nombre;

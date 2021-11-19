@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionProvider {
 	private static Connection connection;
-	private static String url = "jdbc:sqlite:users.db";
+	private static String url = "jdbc:sqlite:Mundo_Marvel.db";
 
 	public static Connection getConnection() throws SQLException {
 		if (connection == null) {
