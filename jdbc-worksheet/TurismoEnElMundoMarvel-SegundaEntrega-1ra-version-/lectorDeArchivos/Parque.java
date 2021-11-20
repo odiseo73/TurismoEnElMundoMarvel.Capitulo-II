@@ -30,7 +30,8 @@ public class Parque {
 	private List<Promocion> promociones;
 	private List<Itinerario> itinerarios;
 
-	public Parque(UsuarioDAO dao1, AtraccionDAO dao2, PromocionDAO dao3, ItinerarioDAO dao4) throws FileNotFoundException, SQLException {
+	public Parque(UsuarioDAO dao1, AtraccionDAO dao2, PromocionDAO dao3, ItinerarioDAO dao4)
+			throws FileNotFoundException, SQLException {
 		this.usuarioDAO = dao1;
 		this.atraccionDAO = dao2;
 		this.promocionDAO = dao3;
@@ -65,45 +66,47 @@ public class Parque {
 	}
 
 	private void aniadirAlItinerario(Usuario usuario, List<Producto> ProductosComprados) throws SQLException {
-		
+
 		Itinerario itinerario = usuario.getItinerario();
-		
+
 		itinerario.setProductosComprados(ProductosComprados);
-		itinerarioDAO.insert(itinerario);
+		itinerarioDAO.update(itinerario);
 		usuarioDAO.update(usuario);
+
+		List<Atraccion> atraccionesCompradas = usuario.getAtraccionesCompradas();
+		for (Atraccion atraccion : atraccionesCompradas) {
+			atraccionDAO.update(atraccion);
+		}
 	}
 
-	private void generarItinerario(Usuario usuario, List<Producto> productosComprados) throws FileNotFoundException {
-		int puntos = 0;
-		int tiempo = 0;
-		System.out.println("Resumen del itinerario de: " + usuario.getNombre() + "\n");
-		System.out.println("Productos Comprados:" + productosComprados.size() + "\n");
-
-		for (Producto producto : productosComprados) {
-
-			producto.getTiempoEnHoras();
-			tiempo += producto.getTiempoEnHoras();
-		}
-
-		System.out.println("Horas necesarias para realizarlos:" + tiempo + "\n");
-
-		for (Producto producto : productosComprados) {
-
-			producto.getPrecio();
-			puntos += producto.getPrecio();
-		}
-
-		System.out.println("Puntos Marvel necesarios:" + puntos + "\n");
-
-		PrintWriter salida = new PrintWriter(new File("Itinerario_Usuario_" + usuario.getNombre() + ".txt"));
-		salida.write("Resumen del itinerario de: " + usuario.getNombre() + "\n");
-		salida.write("Productos Comprados:" + productosComprados.size() + "\n");
-		salida.write("Horas necesarias para realizarlos:" + tiempo + "\n");
-		salida.write("Puntos Marvel necesarios:" + puntos + "\n");
-		salida.close();
-
-	}
-
+	/*
+	 * private void generarItinerario(Usuario usuario, List<Producto>
+	 * productosComprados) throws FileNotFoundException { int puntos = 0; int tiempo
+	 * = 0; System.out.println("Resumen del itinerario de: " + usuario.getNombre() +
+	 * "\n"); System.out.println("Productos Comprados:" + productosComprados.size()
+	 * + "\n");
+	 * 
+	 * for (Producto producto : productosComprados) {
+	 * 
+	 * producto.getTiempoEnHoras(); tiempo += producto.getTiempoEnHoras(); }
+	 * 
+	 * System.out.println("Horas necesarias para realizarlos:" + tiempo + "\n");
+	 * 
+	 * for (Producto producto : productosComprados) {
+	 * 
+	 * producto.getPrecio(); puntos += producto.getPrecio(); }
+	 * 
+	 * System.out.println("Puntos Marvel necesarios:" + puntos + "\n");
+	 * 
+	 * PrintWriter salida = new PrintWriter(new File("Itinerario_Usuario_" +
+	 * usuario.getNombre() + ".txt")); salida.write("Resumen del itinerario de: " +
+	 * usuario.getNombre() + "\n"); salida.write("Productos Comprados:" +
+	 * productosComprados.size() + "\n");
+	 * salida.write("Horas necesarias para realizarlos:" + tiempo + "\n");
+	 * salida.write("Puntos Marvel necesarios:" + puntos + "\n"); salida.close();
+	 * 
+	 * }
+	 */
 	private int compararPrecioPromocion(Usuario o, Promocion p) {
 		return Double.compare(o.getDinero(), p.getPrecioConDescuento());
 	}
@@ -183,7 +186,7 @@ public class Parque {
 		for (Usuario usuario : usuarios) {
 
 			Itinerario itinerario = usuario.getItinerario();
-			List<Producto> productosComprados = new LinkedList<Producto>();
+			List<Producto> productosComprados = itinerario.getProductosComprados(atracciones, promociones);
 			// List<String> productosComprados = new ArrayList<String>();
 			System.out.println("----------------------------------------------");
 			System.out.println("Bienvenido/a a Mundo Marvel");
@@ -194,12 +197,12 @@ public class Parque {
 			ofrecerPromociones(usuario, productosComprados);
 			ofrecerAtracciones(usuario, productosComprados);
 
-			generarItinerario(usuario, productosComprados);
-			aniadirAlItinerario(usuario, productosComprados);
+			// generarItinerario(usuario, productosComprados);
+
 		}
 	}
 
-	void ofrecerPromociones(Usuario usuario, List<Producto> productosComprados) {
+	void ofrecerPromociones(Usuario usuario, List<Producto> productosComprados) throws SQLException {
 
 		// atraccionesUsadas = new ArrayList<Atraccion>();
 		List<Atraccion> atraccionesCompradas = usuario.getAtraccionesCompradas();
@@ -209,9 +212,8 @@ public class Parque {
 
 //productosComprados puede ser pensada comp una lista de String con los nombre de los productos para despues directamente
 //ser colocados en la tabla itinerario			
-			if (compararPrecioPromocion(usuario, promocion) >= 0 && (compararTiempo(usuario, promocion) >= 0)
-					&& promocion.verificarCupo(atraccionesCompradas)
-					&& !verificarRepetidosPromocion(productosComprados, promocion.getAtracciones())) {
+			if (usuario.puedeComprar(promocion) && promocion.verificarCupo(atraccionesCompradas)
+					&& !promocion.verificarRepetidos(productosComprados)) {
 
 				System.out.println(promocion);
 				System.out.println("Acepta la sugerencia?" + " Ingrese SI o NO");
@@ -227,24 +229,23 @@ public class Parque {
 					usuario.comprarProducto(promocion);
 					aniadirProductoComprado(productosComprados, promocion);
 					aniadirAtraccionComprada(atraccionesCompradas, promocion);
-					restarCupo(atraccionesCompradas);
+					promocion.restarCupo(atraccionesCompradas);
+					aniadirAlItinerario(usuario, productosComprados);
 
-					// aniadirOfertable(productosComprados, promocion);
 				}
 				System.out.println("----------------------------------------------");
 			}
 		}
 	}
 
-	void ofrecerAtracciones(Usuario usuario, List<Producto> productosComprados) {
+	void ofrecerAtracciones(Usuario usuario, List<Producto> productosComprados) throws SQLException {
 
 		// atraccionesUsadas = new ArrayList<Atraccion>();
 
 		List<Atraccion> atraccionesCompradas = usuario.getAtraccionesCompradas();
 
 		for (Atraccion atraccionOfrecida : atracciones) {
-			if (compararPrecioAtraccion(usuario, atraccionOfrecida) >= 0
-					&& compararTiempo(usuario, atraccionOfrecida) >= 0
+			if (usuario.puedeComprar(atraccionOfrecida)
 					&& verificarCupo(atraccionesCompradas, atraccionOfrecida)
 					&& !verificarRepetidosAtraccion(atraccionesCompradas, atraccionOfrecida)) {
 
@@ -262,23 +263,18 @@ public class Parque {
 					usuario.comprarProducto(atraccionOfrecida);
 					// aniadirAtraccionesUsadas(atraccionesUsadas, atraccion);
 					aniadirProductoComprado(productosComprados, atraccionOfrecida);
+					atraccionOfrecida.restarCupo();
 					aniadirAtraccionComprada(atraccionesCompradas, atraccionOfrecida);
 					// aniadirAtraccionesUsadas(atraccionesCompradas, atraccion);
 
 					// restarCupo(atraccionesUsadas, atraccionesCompradas);
-					restarCupo(atraccionesCompradas);
+					
 					// aniadirOfertable(productosComprados, atraccion);
+					aniadirAlItinerario(usuario, productosComprados);
 				}
 				System.out.println("----------------------------------------------");
 			}
 		}
-	}
-
-	private void restarCupo(List<Atraccion> atraccionesCompradas) {
-		for (Atraccion atraccion : atraccionesCompradas) {
-			atraccion.restarCupo();
-		}
-
 	}
 
 	public List<Atraccion> getAtracciones() {

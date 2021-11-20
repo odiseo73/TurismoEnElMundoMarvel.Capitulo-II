@@ -52,10 +52,9 @@ public abstract class Promocion implements Producto {
 		}
 		return hayCupo;
 	}
-	
-	public void restarCupo() {
-		for (Atraccion atracciones : atracciones) {
-			atracciones.restarCupo();
+	public void restarCupo(List<Atraccion> atraccionesCompradas) {
+		for (Atraccion atraccion : atraccionesCompradas) {
+			atraccion.restarCupo();
 		}
 	}
 
@@ -79,7 +78,7 @@ public abstract class Promocion implements Producto {
 				+ getPrecioConDescuento() + " Puntos Marvel" + "\n";
 	}
 
-	private boolean verificarRepetidos(List<Producto> productosComprados) {
+	public boolean verificarRepetidos(List<Producto> productosComprados) {
 		boolean bandera = false;
 		for (Atraccion atraccion : this.atracciones) {
 			if (productosComprados.contains(atraccion)) {

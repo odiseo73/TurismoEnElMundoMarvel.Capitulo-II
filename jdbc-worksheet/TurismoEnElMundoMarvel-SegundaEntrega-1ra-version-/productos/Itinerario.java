@@ -34,11 +34,22 @@ public class Itinerario {
 	public double getPuntos() {
 		return puntos;
 	}
-	public LinkedList<String> getProductosComprados(){
-		LinkedList<String> productos = new LinkedList<String>();
+	public List<Producto> getProductosComprados(List<Atraccion> atracciones, List<Promocion> promociones){
+		
+		List<Producto> productos = new LinkedList<Producto>();
 		String[] array = productosComprados.split(",");
+		
 		for (String string : array) {
-			productos.add(string);
+			for (Atraccion atraccion : atracciones) {
+				if(atraccion.getNombre().equals(string)) {
+					productos.add(atraccion);
+				}
+			}
+			for(Promocion promocion : promociones ) {
+				if(promocion.getNombre().equals(string)) {
+					productos.add(promocion);
+				}
+			}
 		}		
 		return productos;
 		
