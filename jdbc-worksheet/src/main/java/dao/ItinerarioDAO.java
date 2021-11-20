@@ -15,13 +15,13 @@ public class ItinerarioDAO {
 public int insert(Itinerario itinerario) throws SQLException {
 		
 		Connection connection = ConnectionProvider.getConnection();
-		String sql = "INSERT INTO ITINERARIO (ID, usuarios, productos, horasNecesarias, puntos) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO ITINERARIO (usuario, productosComprados, horasNecesarias, puntos) VALUES (?, ?, ?, ?)";
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setInt(1, itinerario.getId());
-		statement.setString(2, itinerario.getUsuarios());
-		statement.setString(3, itinerario.getProductos());
-		statement.setDouble(4, itinerario.getHorasNecesarias());
-		statement.setDouble(5, itinerario.getPuntos());
+		
+		statement.setString(1, itinerario.getUsuario());
+		statement.setString(2, itinerario.getProductos());
+		statement.setDouble(3, itinerario.getHorasNecesarias());
+		statement.setDouble(4, itinerario.getPuntos());
 
 		int rows = statement.executeUpdate();
 
@@ -32,13 +32,13 @@ public int insert(Itinerario itinerario) throws SQLException {
 	public int update(Itinerario itinerario) throws SQLException {
 		
 		Connection connection = ConnectionProvider.getConnection();
-		String sql = "UPDATE ITINERARIO SET usuarios = ?, productos = ?, horasNecesarias = ?, puntos = ? WHERE ID = ?";
+		String sql = "UPDATE ITINERARIO SET productosComprados = ?, horasNecesarias = ?, puntos = ? WHERE USUARIO = ?";
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setInt(1, itinerario.getId());
-		statement.setString(2, itinerario.getUsuarios());
-		statement.setString(3, itinerario.getProductos());
-		statement.setDouble(4, itinerario.getHorasNecesarias());
-		statement.setDouble(5, itinerario.getPuntos());
+		
+		statement.setString(1, itinerario.getUsuario());
+		statement.setString(2, itinerario.getProductos());
+		statement.setDouble(3, itinerario.getHorasNecesarias());
+		statement.setDouble(4, itinerario.getPuntos());
 		int rows = statement.executeUpdate();
 
 		return rows;
@@ -48,27 +48,27 @@ public int insert(Itinerario itinerario) throws SQLException {
 	public List<Itinerario> findAll() throws SQLException {
 
 		Connection connection = ConnectionProvider.getConnection();
-		String sql = "SELECT * FROM ITINERARIO";
+		String sql = "SELECT * FROM itinerario";
 		PreparedStatement statement = connection.prepareStatement(sql);
 
 		ResultSet result = statement.executeQuery();
 
-		List<Itinerario> todos = new LinkedList<Itinerario>();
+		List<Itinerario> lista = new LinkedList<Itinerario>();
 
 		while (result.next()) {
-			todos.add(toItinerario(result));
+			lista.add(toItinerario(result));
 		}
 
-		return todos;
+		return lista;
 
 	}
 	private Itinerario toItinerario(ResultSet result) throws SQLException {
-		Integer id = result.getInt("id");
-		String usuarios = result.getString("usuarios");
-		String productos = result.getString("usuarios");
-		Double horasNecesarias = result.getDouble("usuarios");	
-		Double puntos = result.getDouble("usuarios");
+		
+		String usuario = result.getString("usuario");
+		String productos = result.getString("productosComprados");
+		Double horasNecesarias = result.getDouble("horasNecesarias");	
+		Double puntos = result.getDouble("puntos");
 
-		return new Itinerario(id, usuarios, productos, horasNecesarias, puntos);
+		return new Itinerario(usuario, productos, horasNecesarias, puntos);
 	}
 }

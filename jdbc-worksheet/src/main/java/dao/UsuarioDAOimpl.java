@@ -10,7 +10,7 @@ import java.util.List;
 import jdbc.ConnectionProvider;
 import usuario.Usuario;
 
-public class UsuarioDAOimpl implements UsuarioDAO {
+public class UsuarioDAOimpl extends UsuarioDAO {
 
 	
 	public int update(Usuario user) throws SQLException {

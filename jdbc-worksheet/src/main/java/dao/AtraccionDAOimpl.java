@@ -11,7 +11,7 @@ import jdbc.ConnectionProvider;
 import productos.Atraccion;
 
 
-public class AtraccionDAOimpl implements AtraccionDAO {
+public class AtraccionDAOimpl extends AtraccionDAO {
 
 public int update(Atraccion atraccion) throws SQLException {
 		

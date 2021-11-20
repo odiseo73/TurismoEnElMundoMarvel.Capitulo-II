@@ -1,6 +1,5 @@
 package productos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Promocion implements Producto {
@@ -34,16 +33,20 @@ public abstract class Promocion implements Producto {
 		return atracciones;
 	}
 	
+	//que hace esto 
+	//Verifica el cupo de la lista de atracciones que Comprò el usuario y también
+	//el cupo de las propias atracciones de la promocion (pienso que es asi porque si en la
+	//base de datos el cupo es 0, lo levanta y se lo ofrecería igual)
 	public boolean verificarCupo(List<Atraccion> atraccionesCompradas) {
 		boolean hayCupo = true;
 		List<Atraccion> atraccionesDePromocion = this.getAtracciones();
 		for (Atraccion atraccion : atraccionesCompradas) {
-			if (!atraccion.hayCupo()) {
+			if (!atraccion.verificarCupo()) {
 				hayCupo = false;
 			}
 		}
 		for (Atraccion atraccion : atraccionesDePromocion) {
-			if (!atraccion.hayCupo()) {
+			if (!atraccion.verificarCupo()) {
 				hayCupo = false;
 			}
 		}
@@ -76,4 +79,14 @@ public abstract class Promocion implements Producto {
 				+ getPrecioConDescuento() + " Puntos Marvel" + "\n";
 	}
 
+	private boolean verificarRepetidos(List<Producto> productosComprados) {
+		boolean bandera = false;
+		for (Atraccion atraccion : this.atracciones) {
+			if (productosComprados.contains(atraccion)) {
+				bandera = true;
+			}
+		}
+		return bandera;
+	}
+	
 }

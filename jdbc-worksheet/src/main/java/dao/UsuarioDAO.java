@@ -16,12 +16,12 @@ public class UsuarioDAO implements GenericDAO<Usuario> {
 	public int update(Usuario user) throws SQLException {
 		
 		Connection connection = ConnectionProvider.getConnection();
-		String sql = "UPDATE USUARIOS SET DINERO = ?,TIEMPODISPONIBLE = ? WHERE ID = ?";
+		String sql = "UPDATE USUARIOS SET DINERO = ?,TIEMPODISPONIBLE = ? WHERE ID_USUARIOS = ?";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setInt(1, user.getId());
 		//statement.setString(2, user.getNombre());
-		statement.setDouble(3, user.getDinero());
-		statement.setDouble(4, user.getTiempoEnHoras());
+		statement.setDouble(2, user.getDinero());
+		statement.setDouble(3, user.getTiempoEnHoras());
 		
 		int rows = statement.executeUpdate();
 

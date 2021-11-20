@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 import dao.AtraccionDAO;
+import dao.ItinerarioDAO;
 import dao.PromocionDAO;
 import dao.UsuarioDAO;
 import lectorDeArchivos.Parque;
@@ -15,8 +16,9 @@ public class Main {
 	UsuarioDAO usuarioDAO = new UsuarioDAO();
 	AtraccionDAO atraccionDAO = new AtraccionDAO();
 	PromocionDAO promocionDAO = new PromocionDAO(atraccionDAO);
+	ItinerarioDAO itinerarioDAO = new ItinerarioDAO();
 	
-	Parque parque = new Parque(usuarioDAO,atraccionDAO,promocionDAO);
+	Parque parque = new Parque(usuarioDAO,atraccionDAO,promocionDAO, itinerarioDAO);
 	
 	}
 

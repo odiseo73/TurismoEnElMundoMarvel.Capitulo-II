@@ -23,6 +23,7 @@ public class TestParque {
 		Parque parque = new Parque(usuarioDAO,atraccionDAO,promocionDAO);
 		assertNotNull(parque.getUsuarios());
 		assertNotNull(parque.getAtracciones());
+		
 	}
 
 }

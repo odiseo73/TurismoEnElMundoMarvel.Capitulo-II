@@ -1,31 +1,30 @@
 package productos;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Itinerario {
-	private int id;
-	private String usuarios;
-	private String productos;
+	
+	private String usuario;
+	private String productosComprados;
 	private double horasNecesarias;
 	private double puntos;
 
-	public Itinerario(int id, String usuarios, String productos, double horasNecesarias, double puntos) {
+	public Itinerario(String usuario, String productosComprados, double horasNecesarias, double puntos) {
 		super();
-		this.id = id;
-		this.usuarios = usuarios;
-		this.productos = productos;
+		
+		this.usuario = usuario;
+		this.productosComprados = productosComprados;
 		this.horasNecesarias = horasNecesarias;
 		this.puntos = puntos;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public String getUsuarios() {
-		return usuarios;
+	public String getUsuario() {
+		return usuario;
 	}
 
 	public String getProductos() {
-		return productos;
+		return productosComprados;
 	}
 
 	public double getHorasNecesarias() {
@@ -35,5 +34,23 @@ public class Itinerario {
 	public double getPuntos() {
 		return puntos;
 	}
+	public LinkedList<String> getProductosComprados(){
+		LinkedList<String> productos = new LinkedList<String>();
+		String[] array = productosComprados.split(",");
+		for (String string : array) {
+			productos.add(string);
+		}		
+		return productos;
+		
+	}
+	//despues se modifica la lista de productosComprados por String
+	 public void setProductosComprados(List<Producto> productosComprados) {
+		
+		 for (Producto producto : productosComprados) {
+			this.productosComprados = producto.getNombre() + ",";
+			this.horasNecesarias += producto.getTiempoEnHoras();
+			this.puntos += producto.getPrecio();
+		}
+	 }
 
 }

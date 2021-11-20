@@ -10,8 +10,8 @@ public interface Producto {
 
 	 String getNombre();
 	
-	 List<Atraccion> getAtracciones();
-	
 	 boolean esPromocion();
-	 boolean verificarCupo(List<Atraccion> atr);
+	 
+
+	List<Atraccion> getAtracciones();
 }
