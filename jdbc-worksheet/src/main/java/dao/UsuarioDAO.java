@@ -18,10 +18,11 @@ public class UsuarioDAO implements GenericDAO<Usuario> {
 		Connection connection = ConnectionProvider.getConnection();
 		String sql = "UPDATE USUARIOS SET DINERO = ?,TIEMPODISPONIBLE = ? WHERE ID_USUARIOS = ?";
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setInt(1, user.getId());
+		statement.setDouble(1, user.getDinero());
+		statement.setInt(3, user.getId());
 		//statement.setString(2, user.getNombre());
-		statement.setDouble(2, user.getDinero());
-		statement.setDouble(3, user.getTiempoEnHoras());
+		
+		statement.setDouble(2, user.getTiempoEnHoras());
 		
 		int rows = statement.executeUpdate();
 

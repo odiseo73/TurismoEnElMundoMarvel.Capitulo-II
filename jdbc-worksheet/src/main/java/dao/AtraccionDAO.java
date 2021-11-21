@@ -16,13 +16,13 @@ public class AtraccionDAO implements GenericDAO<Atraccion> {
 public int update(Atraccion atraccion) throws SQLException {
 		
 		Connection connection = ConnectionProvider.getConnection();
-		String sql = "UPDATE ATRACCIONES SET PRECIO = ?,TIEMPOENHORAS = ?, CUPODISPONIBLE = ? WHERE ID = ?";
+		String sql = "UPDATE ATRACCIONES SET CUPODISPONIBLE = ? WHERE ID_ATRACCIONES = ?";
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setInt(1, atraccion.getId());
+		statement.setDouble(1, atraccion.getCupoDisponible());
+		statement.setInt(2, atraccion.getId());
 		//statement.setString(2, user.getNombre());
-		statement.setDouble(3, atraccion.getPrecio());
-		statement.setDouble(4, atraccion.getCupoDisponible());
-		statement.setDouble(5, atraccion.getTiempoEnHoras());
+		
+		
 		
 		int rows = statement.executeUpdate();
 

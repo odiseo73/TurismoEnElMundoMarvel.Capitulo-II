@@ -1,7 +1,7 @@
-Attilan,35,2,20
+Attilan,35,2,10
 Wakanda,50,1.5,15
-Asgard,60,3,15
-Sokovia,20,3,7
+Asgard,60,3,7
+Sokovia,20,3,5
 Latveria,30,2.5,6
-Reino Cuantico,55,1,8
+Reino Cuantico,55,1,6
 Jotunheim,45,1,10

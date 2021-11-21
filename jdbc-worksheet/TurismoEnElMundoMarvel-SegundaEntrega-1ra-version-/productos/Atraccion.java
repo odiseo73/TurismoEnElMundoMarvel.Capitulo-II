@@ -45,6 +45,15 @@ public class Atraccion implements Producto {
 
 		return precio;
 	}
+	public boolean compararNombresIguales(List<Atraccion> atraccionesCompradas, Producto producto) {
+		boolean bandera = false;
+		for (Atraccion atraccion : atraccionesCompradas) {
+			if (atraccion.equals(producto)) {
+				bandera = true;
+			}
+		}
+		return bandera;
+	}
 
 	public boolean verificarCupo() {
 		return this.cupoDisponible > 0;
@@ -78,10 +87,11 @@ public class Atraccion implements Producto {
 		if (getClass() != obj.getClass())
 			return false;
 		Atraccion other = (Atraccion) obj;
-		return CUPO_INICIAL == other.CUPO_INICIAL && cupoDisponible == other.cupoDisponible
+		return CUPO_INICIAL == other.CUPO_INICIAL
 				&& Double.doubleToLongBits(tiempoEnHoras) == Double.doubleToLongBits(other.tiempoEnHoras)
 				&& Objects.equals(nombre, other.nombre) && precio == other.precio;
 	}
+
 
 	public int getId() {
 		return id;

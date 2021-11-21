@@ -35,10 +35,10 @@ public int insert(Itinerario itinerario) throws SQLException {
 		String sql = "UPDATE ITINERARIO SET productosComprados = ?, horasNecesarias = ?, puntos = ? WHERE USUARIO = ?";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		
-		statement.setString(1, itinerario.getUsuario());
-		statement.setString(2, itinerario.getProductos());
-		statement.setDouble(3, itinerario.getHorasNecesarias());
-		statement.setDouble(4, itinerario.getPuntos());
+		
+		statement.setString(1, itinerario.getProductos());
+		statement.setDouble(2, itinerario.getHorasNecesarias());
+		statement.setDouble(3, itinerario.getPuntos());
 		int rows = statement.executeUpdate();
 
 		return rows;

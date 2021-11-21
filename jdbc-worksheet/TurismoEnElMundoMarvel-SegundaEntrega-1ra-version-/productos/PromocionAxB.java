@@ -20,6 +20,12 @@ private double precio;
 	}
 
 
+	public void restarCupo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 
 

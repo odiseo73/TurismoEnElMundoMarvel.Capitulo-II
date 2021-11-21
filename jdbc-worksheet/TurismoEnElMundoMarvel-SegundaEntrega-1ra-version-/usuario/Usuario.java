@@ -14,7 +14,7 @@ public class Usuario {
 	private String nombre;
 	private double tiempoDisponible;
 	private double dineroDisponible;
-	private List<Atraccion> atraccionesCompradas; 
+	private List<Atraccion> atraccionesCompradas;
 	private Itinerario itinerario;
 	// private List<Atraccion> atraccionesCompradas;
 
@@ -46,15 +46,33 @@ public class Usuario {
 	public Itinerario getItinerario() {
 		return this.itinerario;
 	}
+
 	public void setItinerario(Itinerario itinerario) {
 		this.itinerario = itinerario;
 	}
+
+	public boolean tieneComprado(Producto productoOfrecido) {
+		boolean bandera = false;
+		if (productoOfrecido.esPromocion()) {
+			for (Atraccion atraccion : productoOfrecido.getAtracciones()) {
+				if (atraccion.compararNombresIguales(this.atraccionesCompradas, atraccion)) {
+					bandera = true;
+				}
+			}
+		} else {
+			if (productoOfrecido.compararNombresIguales(this.atraccionesCompradas, productoOfrecido)) {
+				bandera = true;
+			}
+		}
+		return bandera;
+	}
+
 	public List<Atraccion> getAtraccionesCompradas() {
 		return atraccionesCompradas;
 	}
 
 	public boolean comprarProducto(Producto o) {
-		if (this.puedeComprar(o)){
+
 		this.dineroDisponible -= o.getPrecio();
 		this.tiempoDisponible -= o.getTiempoEnHoras();
 
@@ -66,16 +84,21 @@ public class Usuario {
 		if (!o.esPromocion()) {
 			atraccionesCompradas.add((Atraccion) o);
 		}
-	} return false;
+		return false;
 	}
 
 	@Override
 	public String toString() {
-		return "Usuario [Nombre=" + nombre + ", TiempoEnHoras=" + tiempoDisponible + ", Dinero=" + dineroDisponible + "]" + "\n";
+		return "Usuario [Nombre=" + nombre + ", TiempoEnHoras=" + tiempoDisponible + ", Dinero=" + dineroDisponible
+				+ "]" + "\n";
 	}
 
 	public boolean puedeComprar(Producto o) {
-		return (this.dineroDisponible >= o.getPrecio() && this.tiempoDisponible >= o.getTiempoEnHoras());
+		if ((this.dineroDisponible >= o.getPrecio()) && (this.tiempoDisponible >= o.getTiempoEnHoras())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

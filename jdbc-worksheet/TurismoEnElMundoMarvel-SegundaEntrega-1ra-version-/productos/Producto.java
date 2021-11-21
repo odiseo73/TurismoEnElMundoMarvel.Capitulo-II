@@ -11,7 +11,7 @@ public interface Producto {
 	 String getNombre();
 	
 	 boolean esPromocion();
-	 
+	 boolean compararNombresIguales(List<Atraccion> atraccionesCompradas, Producto productoOfrecido);
 
 	List<Atraccion> getAtracciones();
 }
