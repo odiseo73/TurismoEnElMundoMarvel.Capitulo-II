@@ -54,11 +54,11 @@ public class Itinerario {
 		return productos;
 		
 	}
-	//despues se modifica la lista de productosComprados por String
+	
 	 public void setProductosComprados(List<Producto> productosComprados) {
 		
 		 for (Producto producto : productosComprados) {
-			this.productosComprados = producto.getNombre() + ",";
+			this.productosComprados += producto.getNombre() + ",";
 			this.horasNecesarias += producto.getTiempoEnHoras();
 			this.puntos += producto.getPrecio();
 		}

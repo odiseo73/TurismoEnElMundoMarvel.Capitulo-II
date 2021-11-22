@@ -15,6 +15,7 @@ public class Usuario {
 	private double tiempoDisponible;
 	private double dineroDisponible;
 	private List<Atraccion> atraccionesCompradas;
+	
 	private Itinerario itinerario;
 	// private List<Atraccion> atraccionesCompradas;
 
@@ -66,14 +67,26 @@ public class Usuario {
 		}
 		return bandera;
 	}
-
+	public void setAtraccionesCompradas(List<Producto> productosComprados) {
+		for (Producto productoComprado : productosComprados) {
+			if(productoComprado.esPromocion()) {
+				for (Atraccion atraccion : productoComprado.getAtracciones()) {
+					this.atraccionesCompradas.add(atraccion);
+				}
+			}
+		if(!productoComprado.esPromocion()) {
+			this.atraccionesCompradas.add((Atraccion) productoComprado);
+		}
+		}
+	}
+	
 	public List<Atraccion> getAtraccionesCompradas() {
 		return atraccionesCompradas;
 	}
 
 	public boolean comprarProducto(Producto o) {
 
-		this.dineroDisponible -= o.getPrecio();
+		this.dineroDisponible -= o.getPrecioConDescuento();
 		this.tiempoDisponible -= o.getTiempoEnHoras();
 
 		if (o.esPromocion()) {

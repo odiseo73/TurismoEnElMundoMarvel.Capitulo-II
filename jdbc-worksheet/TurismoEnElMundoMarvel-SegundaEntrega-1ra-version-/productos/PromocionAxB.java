@@ -26,6 +26,12 @@ private double precio;
 	}
 
 
+	public boolean compararNombresIguales(List<Atraccion> atraccionesCompradas, Producto productoOfrecido) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 	
 
 

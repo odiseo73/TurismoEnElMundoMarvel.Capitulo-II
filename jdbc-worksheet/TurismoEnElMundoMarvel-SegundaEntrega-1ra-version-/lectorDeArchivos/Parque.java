@@ -77,7 +77,7 @@ public class Parque {
 		for (Atraccion atraccion : atraccionesCompradas) {
 			atraccionDAO.update(atraccion);
 		}
-		
+
 	}
 
 	private List<Atraccion> aniadirAtraccionComprada(List<Atraccion> atraccionesCompradas, Producto producto) {
@@ -100,14 +100,7 @@ public class Parque {
 	}
 
 	private List<Producto> aniadirProductoComprado(List<Producto> productosComprados, Producto producto) {
-		if (producto.esPromocion()) {
-			for (Atraccion atraccion : producto.getAtracciones()) {
-				productosComprados.add(atraccion);
-			}
-		}
-		if (!producto.esPromocion()) {
-			productosComprados.add(producto);
-		}
+		productosComprados.add(producto);
 		return productosComprados;
 	}
 
@@ -128,6 +121,7 @@ public class Parque {
 
 			Itinerario itinerario = usuario.getItinerario();
 			List<Producto> productosComprados = itinerario.getProductosComprados(atracciones, promociones);
+			usuario.setAtraccionesCompradas(productosComprados);
 			// List<String> productosComprados = new ArrayList<String>();
 			System.out.println("----------------------------------------------");
 			System.out.println("Bienvenido/a a Mundo Marvel");
@@ -143,18 +137,17 @@ public class Parque {
 
 	void ofrecerPromociones(Usuario usuario, List<Producto> productosComprados) throws SQLException {
 
-		
 		List<Atraccion> atraccionesCompradas = usuario.getAtraccionesCompradas();
 
 		for (Promocion promocion : promociones) {
-			
+
 			if ((usuario.puedeComprar(promocion) && promocion.verificarCupo(atraccionesCompradas)
 					&& !usuario.tieneComprado(promocion))) {
 
 				System.out.println(promocion);
 				System.out.println("Acepta la sugerencia?" + " Ingrese SI o NO");
 				Scanner sc = new Scanner(System.in);
-				
+
 				String respuesta;
 				respuesta = sc.nextLine().toUpperCase();
 
@@ -168,19 +161,17 @@ public class Parque {
 					aniadirAtraccionComprada(atraccionesCompradas, promocion);
 					promocion.restarCupo(atraccionesCompradas);
 					aniadirAlItinerario(usuario, productosComprados);
-					
+
 				}
-				
+
 				System.out.println("----------------------------------------------");
 			}
-			
+
 		}
-		
+
 	}
 
 	void ofrecerAtracciones(Usuario usuario, List<Producto> productosComprados) throws SQLException {
-
-		// atraccionesUsadas = new ArrayList<Atraccion>();
 
 		List<Atraccion> atraccionesCompradas = usuario.getAtraccionesCompradas();
 
@@ -200,15 +191,11 @@ public class Parque {
 				}
 				if (respuesta.equals("SI")) {
 					usuario.comprarProducto(atraccionOfrecida);
-					// aniadirAtraccionesUsadas(atraccionesUsadas, atraccion);
+					
 					aniadirProductoComprado(productosComprados, atraccionOfrecida);
 					atraccionOfrecida.restarCupo();
 					aniadirAtraccionComprada(atraccionesCompradas, atraccionOfrecida);
-					// aniadirAtraccionesUsadas(atraccionesCompradas, atraccion);
-
-					// restarCupo(atraccionesUsadas, atraccionesCompradas);
 					
-					// aniadirOfertable(productosComprados, atraccion);
 					aniadirAlItinerario(usuario, productosComprados);
 				}
 				System.out.println("----------------------------------------------");

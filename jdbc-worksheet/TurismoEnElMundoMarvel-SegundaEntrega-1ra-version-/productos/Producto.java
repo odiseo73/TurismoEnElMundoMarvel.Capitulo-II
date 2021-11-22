@@ -3,8 +3,8 @@ package productos;
 import java.util.List;
 
 public interface Producto {
-	int getPrecio();
-
+	double getPrecio();
+double getPrecioConDescuento();
 	double getTiempoEnHoras();
 	 void restarCupo();
 

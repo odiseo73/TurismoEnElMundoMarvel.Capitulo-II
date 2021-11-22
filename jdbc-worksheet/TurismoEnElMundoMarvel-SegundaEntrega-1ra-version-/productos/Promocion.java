@@ -21,8 +21,8 @@ public abstract class Promocion implements Producto {
 		return nombre;
 	}
 
-	public int getPrecio() {
-		int precio = 0;
+	public double getPrecio() {
+		double precio = 0;
 		for (Atraccion atraccion : atracciones) {
 			precio += atraccion.getPrecio();
 		}
@@ -40,7 +40,7 @@ public abstract class Promocion implements Producto {
 		for (Atraccion atraccion : atraccionesCompradas) {
 			for (Atraccion atraccionDePromo : atraccionesDePromocion) {
 				if(atraccion.equals(atraccionDePromo)) {
-					if (atraccion.verificarCupo()) {
+					if (!atraccion.verificarCupo()) {
 						hayCupo = false;
 					} 
 					

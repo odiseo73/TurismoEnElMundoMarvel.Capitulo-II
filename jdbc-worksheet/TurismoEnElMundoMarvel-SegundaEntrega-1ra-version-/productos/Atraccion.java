@@ -41,12 +41,13 @@ public class Atraccion implements Producto {
 		return cupoDisponible;
 	}
 
-	public int getPrecio() {
+	public double getPrecio() {
 
 		return precio;
 	}
 	public boolean compararNombresIguales(List<Atraccion> atraccionesCompradas, Producto producto) {
 		boolean bandera = false;
+		
 		for (Atraccion atraccion : atraccionesCompradas) {
 			if (atraccion.equals(producto)) {
 				bandera = true;
@@ -100,6 +101,11 @@ public class Atraccion implements Producto {
 	public List<Atraccion> getAtracciones() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public double getPrecioConDescuento() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 
