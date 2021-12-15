@@ -1,0 +1,100 @@
+@charset "UTF-8";
+
+body{
+	background: #000000; 
+}
+
+.container_marketing{
+	margin-top:5rem;
+margin-left:5rem;
+margin-right:5rem;
+}
+
+.rounded_image{
+	width:100px;
+    height:100px;
+    border-radius:50px;
+    margin-bottom:1rem;
+    margin-top:0rem;
+}
+
+.center{
+display:"block";
+  margin-left:"auto";
+  margin-right:"auto";
+  width:50%;
+  }
+.title_text{
+	color:white;
+	margin-top:12rem;
+	margin-bottom:4rem;
+	font-size: 3rem;
+	text-align: center;
+	font-family:Candara;
+}
+.welcome{
+	color:white;
+	margin-top:1rem;
+	margin-bottom:2rem;
+	font-size: 3rem;
+	text-align: center;
+	font-family:Candara;
+}
+.title_text1{
+	margin-top:12rem;
+	font-size:2rem; 
+	color:white;
+	margin-bottom:6rem;
+	text-align: center;
+}
+.subtitle_text{
+	color:#f5f5f5;
+	font-family: Harrington;
+	font-size: 2.7rem;
+	margin-left:2rem;
+	margin-top:0.5rem;
+	font-weight: bold;
+}
+
+.pack_text{
+	color: white;
+	font-size: 2rem;
+	text-align:center;
+font-family:Candara;
+font-weight: bold;
+margin-top:1rem;
+}
+.phrase_text{
+	color: white;
+	font-size: 1.3rem;
+	text-align:center;
+font-family:Candara;
+font-weight: bold;
+}
+
+.sub_phrase{
+	color:white;
+	font-size:1.5rem;
+	font-family:Candara;
+	margin-left:2rem;
+}
+
+.basic_text{
+	color:white;
+	font-size:1.2rem;
+	margin-top:1rem;
+	margin-left:2rem;
+	font-family:Microsoft Tai Le;	
+	text-align:justify;
+}
+
+.name_text{
+	color:black;
+	font-size:5rem;
+	font-weight:bold;
+	font-family:Microsoft Tai Le;	
+}
+
+.row{
+	text-align:center;
+}

@@ -1,0 +1,41 @@
+@charset "UTF-8";
+.body_atr{
+background: url("/TurismoEnElMundoMarvel_Webapp/assets/img/Fondos/fondo5.jpg") no-repeat center center fixed; 
+  background-size: cover;
+}
+
+.body_prom{
+background: url("/TurismoEnElMundoMarvel_Webapp/assets/img/Fondos/fondo2.jpg") no-repeat center center fixed; 
+  background-size: cover;
+}
+
+.body_iti{
+background: url("/TurismoEnElMundoMarvel_Webapp/assets/img/Fondos/fondo3.jpg") no-repeat center center fixed; 
+  background-size: cover;
+}
+
+.body_itineraries{
+background: url("/TurismoEnElMundoMarvel_Webapp/assets/img/Fondos/fondo4.jpg") no-repeat center center fixed; 
+  background-size: cover;
+}
+
+.body_users{
+	background: url("/TurismoEnElMundoMarvel_Webapp/assets/img/Fondos/fondo7.jpg") no-repeat center center fixed; 
+  background-size: cover;
+}
+
+.title_text{
+color:white;
+font-size:5rem;
+}
+
+.subtitle_text{
+color:white;
+font-size:2rem;
+text-align:center;
+}
+
+.container{
+	opacity:90%;
+}
+
